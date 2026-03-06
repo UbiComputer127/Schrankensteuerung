@@ -12,7 +12,7 @@ class Leds_Class
   enum LedsState_Enum
   {
       OFF = 0,
-      ON_WITE = 1,
+      ON_WHITE = 1,
       ON_RED = 2
   };
 
@@ -26,6 +26,8 @@ class Leds_Class
   unsigned int PortLed2_;     // red Led and white Led
   unsigned int PortLed3_;     // rerd Led
 
+  bool WhiteLedSmartActive;
+  bool RedLedSmartActive;
   public:
 
   Leds_Class(unsigned int PortLed1, unsigned int PortLed2, unsigned int PortLed3);
@@ -39,6 +41,15 @@ class Leds_Class
   void setRedLedsActive();
 
   void setLedsOff();
+
+  void setWhiteLedSmartOff();
+
+  bool getWhitLedSmartOff();
+
+  void setRedLedSmartOff();
+
+  bool getRedLedSmartOff();
+
   
 };
 

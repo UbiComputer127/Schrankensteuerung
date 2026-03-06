@@ -6,6 +6,8 @@ Leds_Class::Leds_Class(unsigned int PortLed1, unsigned int PortLed2, unsigned in
 : PortLed1_(PortLed1)       // weisse LED Anode (schwarz)
 , PortLed2_(PortLed2)       // rote und weisse LED Kathode (rot)
 , PortLed3_(PortLed3)       // rote LED (grün)
+, WhiteLedSmartActive(false)
+, RedLedSmartActive(false)
 {
 
 }
@@ -26,17 +28,23 @@ Leds_Class::Leds_Class(unsigned int PortLed1, unsigned int PortLed2, unsigned in
  {
     switch (LedsState)
     {
-      case ON_WITE:
-          
+      case ON_WHITE:
           if (TriggerTime < millis())
           {
-            
               // Led umschalten (P2)
               if (LedOnWhite == false)
               {
-                  digitalWrite(PortLed1_, HIGH);
-                  TriggerTime = millis() + WhiteLedOn;
-                  LedOnWhite = true;
+                  if (WhiteLedSmartActive)
+                  {
+                        LedsState = OFF;
+                        WhiteLedSmartActive = false;
+                  }
+                  else
+                  {
+                        digitalWrite(PortLed1_, HIGH);
+                        TriggerTime = millis() + WhiteLedOn;
+                        LedOnWhite = true;
+                  }
               }
               else
               {
@@ -51,9 +59,19 @@ Leds_Class::Leds_Class(unsigned int PortLed1, unsigned int PortLed2, unsigned in
         {
             if (LedOnRed == true)
             {
-                digitalWrite(PortLed2_, LOW);
-                digitalWrite(PortLed3_, HIGH);
-                LedOnRed = false;
+                if (RedLedSmartActive)
+                {
+                    LedsState = OFF;
+                    RedLedSmartActive = false;
+                    digitalWrite(PortLed2_, LOW);
+                    digitalWrite(PortLed3_, LOW);
+                }
+                else
+                {
+                    digitalWrite(PortLed2_, LOW);
+                    digitalWrite(PortLed3_, HIGH);
+                    LedOnRed = false;
+                }
             }
             else 
             {
@@ -80,7 +98,7 @@ void Leds_Class::setWhiteLedActive()
     // P2 auf Low, dann leuchtet sie
     digitalWrite(PortLed1_, HIGH);
     TriggerTime = millis() + WhiteLedOn;
-    LedsState = ON_WITE;
+    LedsState = ON_WHITE;
     LedOnWhite = true;
 }
 
@@ -102,6 +120,32 @@ void Leds_Class::setLedsOff()
     LedsState = OFF;
 }
 
+void Leds_Class::setWhiteLedSmartOff()
+{
+    if (LedsState == ON_WHITE)
+    {
+        WhiteLedSmartActive = true;
+    }
+    else
+    {
+        WhiteLedSmartActive = false;
+    }
+}
+
+bool Leds_Class::getWhitLedSmartOff()
+{
+    return WhiteLedSmartActive;
+}
+
+void Leds_Class::setRedLedSmartOff()
+{
+
+}
+
+bool Leds_Class::getRedLedSmartOff()
+{
+
+}
+
 Leds_Class Leds_Object1(A0, A1, A2);
 Leds_Class Leds_Object2(A3, A4, A5);
-
