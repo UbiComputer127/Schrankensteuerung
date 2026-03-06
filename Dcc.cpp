@@ -3,16 +3,13 @@
 
 Dcc_Class::Switch_Enum Switch = Dcc_Class::IDLE;
 uint8_t Dcc_Class::RawData[] = {0,0,0,0,0,0,0,0,0,0};
-
 uint16_t Dcc_Class::PreambelBitCount = 0;
 uint16_t Dcc_Class::DataIndex = 0;
 uint16_t Dcc_Class::BitPosition = 0;
 uint8_t Dcc_Class::XorTest = 0;
-
 unsigned long Dcc_Class::CurrentTimer_ = 0;
 unsigned long Dcc_Class::LastTimer_ = 0;
 Dcc_Class::Switch_Enum Dcc_Class::Switch = Dcc_Class::IDLE;
-
 Dcc_Class::DccCommand_Enum Dcc_Class::DccCommand = Dcc_Class::CommandIdle;
 
 Dcc_Class::Dcc_Class(unsigned int Input)

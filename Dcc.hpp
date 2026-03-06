@@ -1,22 +1,24 @@
 #pragma once
 
 #include <Arduino.h> 
-#include "Queue.hpp"
 
 class Dcc_Class
 {
 public:
 
-      struct DccCommand_Struct
-      {
-            int Length;
-            uint8_t Data[8];
-      };
-
+      /**
+            Constructor, stellt den Eingang für das DCC Signal zur Verfügung
+      */
       Dcc_Class(unsigned int Input);
       
+      /**
+            Initialisiert den Flankeninterrupt und setzt den Startpunkt des DCC Empfangsautomaten
+      */
       void init();
 
+      /**
+            Intzerruptroutine bei steigenden Flanken
+      */
       static void RisingDcc();
 
       enum DccCommand_Enum
@@ -26,6 +28,9 @@ public:
             CommandClose
       };
 
+      /**
+            Abfrage, ob Kommando fürSchranke empfangen wurde
+      */
       bool getDccCommand(DccCommand_Enum & Cmd); 
 
       enum Switch_Enum
@@ -38,21 +43,19 @@ public:
       };
 
      
-
 private:
 
       // Port DCC Signal
       unsigned int Input_;
 
-      // Null-bit: 90 ... 10000 µs
+      // Null-bit: 150 bis 10000 µs
       static const unsigned long NullBitMin = 150;
       static const unsigned long NullBitMax = 10000;
 
-      // Eins-Bit: 50 ... 66 µs
+      // Eins-Bit: 80 bis 130 µs
       static const unsigned long EinsBitMin = 80;
       static const unsigned long EinsBitMax = 130; 
       
-      static const unsigned long MaxDiff = 10; 
       static unsigned long CurrentTimer_;
       static unsigned long LastTimer_;
       static const uint8_t RawDataMax = 10;
