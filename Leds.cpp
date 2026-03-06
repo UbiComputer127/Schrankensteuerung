@@ -30,6 +30,7 @@ Leds_Class::Leds_Class(unsigned int PortLed1, unsigned int PortLed2, unsigned in
           
           if (TriggerTime < millis())
           {
+            
               // Led umschalten (P2)
               if (LedOnWhite == false)
               {
