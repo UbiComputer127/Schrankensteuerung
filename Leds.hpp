@@ -9,6 +9,8 @@ class Leds_Class
   static const unsigned long WhiteLedOff = 800;
   static const unsigned long RedLedsswitch = 500;
 
+  public:
+
   enum LedsState_Enum
   {
       OFF = 0,
@@ -16,6 +18,8 @@ class Leds_Class
       ON_RED = 2
   };
 
+  private:
+  
   LedsState_Enum LedsState;
   bool LedOnWhite;
   bool LedOnRed;
@@ -44,13 +48,10 @@ class Leds_Class
 
   void setWhiteLedSmartOff();
 
-  bool getWhitLedSmartOff();
-
   void setRedLedSmartOff();
-
-  bool getRedLedSmartOff();
-
   
+  LedsState_Enum getLedsState();
+
 };
 
 extern Leds_Class Leds_Object1;

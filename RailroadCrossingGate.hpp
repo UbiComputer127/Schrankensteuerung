@@ -13,7 +13,8 @@ class RailroadCrossingGate_Class
       START_CLOSE_BARRIER,  // swarten, das Schranken zu gehen
       CLOSE_BARRIER,        // Schranke schliesst
       CLOSED_BARRIER,       // Schranke ist geschlossen
-      OPEN_BARRIER          // Schranke öffnet
+      OPEN_BARRIER,          // Schranke öffnet
+      WAIT_RED_LEDS_OFF     // warten, dass rote Leds aus sind
   };
 
   Switch_Enum Switch = IDLE;

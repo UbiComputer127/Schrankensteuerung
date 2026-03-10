@@ -32,10 +32,9 @@ void RailroadCrossingGate_Class::process()
       if (Key_Object.getEvent() || (Cmd == Dcc_Class::DccCommand_Enum::CommandClose))
       {
           // Zug kommt, Schranke schliessen
-          Leds_Object1.setLedsOff(); // Weisse LED ausschalten
-          Leds_Object2.setLedsOff(); // Weisse LED ausschalten
-          Timer = millis() + TimeShutofWhiteLed;
-          // Schranke wird geschlossen: die zwei uuntersten Bits auf 1 setzen
+          Leds_Object1.setWhiteLedSmartOff(); // Weisse LED ausschalten
+          Leds_Object2.setWhiteLedSmartOff(); // Weisse LED ausschalten
+         
           S88_Object.setValue(true, 0x00002);
           Switch = START_RED_LIGHT;
       }
@@ -43,7 +42,8 @@ void RailroadCrossingGate_Class::process()
     break;
 
     case START_RED_LIGHT:
-    if (millis() > Timer)
+    // warten, bis weisse Leds aus sind
+    if ((Leds_Object1.getLedsState() == Leds_Class::OFF) && (Leds_Object2.getLedsState() == Leds_Class::OFF))
     {
         // rote LEDs leuchten
         Leds_Object1.setRedLedsActive();
@@ -107,14 +107,23 @@ void RailroadCrossingGate_Class::process()
     case OPEN_BARRIER:
         if (Barrier1_Object.getState() == Barrier_Class::BARRIER_OPEN)
         {
-          Serial.println("Schranke wieder offen");
           // rotes Licht aUSSCHALTEN
-          Leds_Object1.setWhiteLedActive();
-          Leds_Object2.setWhiteLedActive();
-          S88_Object.setValue(false, 0x0002);
-          Switch = IDLE;   
+          Leds_Object1.setRedLedSmartOff();
+          Leds_Object2.setRedLedSmartOff();
+          Switch = WAIT_RED_LEDS_OFF;   
         }
     break;
+
+    case WAIT_RED_LEDS_OFF:
+        if ((Leds_Object1.getLedsState() == Leds_Class::OFF) && (Leds_Object2.getLedsState() == Leds_Class::OFF))
+        {
+            Leds_Object1.setWhiteLedActive();
+            Leds_Object2.setWhiteLedActive();
+            S88_Object.setValue(false, 0x0002);
+            Switch = IDLE;
+        }
+    break;
+    
     default:
     break;
   }

@@ -34,6 +34,7 @@ Leds_Class::Leds_Class(unsigned int PortLed1, unsigned int PortLed2, unsigned in
               // Led umschalten (P2)
               if (LedOnWhite == false)
               {
+                  // hier ist die LED gerade aus  
                   if (WhiteLedSmartActive)
                   {
                         LedsState = OFF;
@@ -48,6 +49,7 @@ Leds_Class::Leds_Class(unsigned int PortLed1, unsigned int PortLed2, unsigned in
               }
               else
               {
+                  // Led ist gerade an
                   digitalWrite(PortLed1_, LOW);
                   TriggerTime = millis() + WhiteLedOff;
                   LedOnWhite = false;
@@ -79,7 +81,6 @@ Leds_Class::Leds_Class(unsigned int PortLed1, unsigned int PortLed2, unsigned in
                 digitalWrite(PortLed3_, LOW);
                 LedOnRed = true; 
             }
-            //Serial.println("Red LEDs trigger");
             TriggerTime = millis() + RedLedsswitch;
         }
        break;
@@ -92,10 +93,10 @@ Leds_Class::Leds_Class(unsigned int PortLed1, unsigned int PortLed2, unsigned in
 
 void Leds_Class::setWhiteLedActive()
 {
-    // P3 und P4 auf 1
+    // P3 und P4 auf 0
     digitalWrite(PortLed2_, LOW);
     digitalWrite(PortLed3_, LOW);
-    // P2 auf Low, dann leuchtet sie
+    // P2 auf 1, dann leuchtet sie
     digitalWrite(PortLed1_, HIGH);
     TriggerTime = millis() + WhiteLedOn;
     LedsState = ON_WHITE;
@@ -126,25 +127,19 @@ void Leds_Class::setWhiteLedSmartOff()
     {
         WhiteLedSmartActive = true;
     }
-    else
-    {
-        WhiteLedSmartActive = false;
-    }
 }
 
-bool Leds_Class::getWhitLedSmartOff()
+Leds_Class::LedsState_Enum Leds_Class::getLedsState()
 {
-    return WhiteLedSmartActive;
+    return LedsState;
 }
 
 void Leds_Class::setRedLedSmartOff()
 {
-
-}
-
-bool Leds_Class::getRedLedSmartOff()
-{
-
+    if (LedsState == ON_RED)
+    {
+        RedLedSmartActive = true;
+    }
 }
 
 Leds_Class Leds_Object1(A0, A1, A2);
