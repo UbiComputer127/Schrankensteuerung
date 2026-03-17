@@ -6,7 +6,11 @@ class S88_Class
 {
     public:
 
-    S88_Class(unsigned int InputClock, unsigned int InputLoad, unsigned int InputData, unsigned int OutputData);
+    S88_Class(unsigned int InputClock,      // Eingang Port Clock
+              unsigned int InputLoad,       // Eingang Port Load
+              unsigned int InputData,       // Eingang Port Data
+              unsigned int OutputData);     // Ausgang Port Data
+              
     void init();
     
     static void RisingLoad();
