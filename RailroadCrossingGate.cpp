@@ -114,6 +114,7 @@ void RailroadCrossingGate_Class::process()
     break;
     
     default:
+    // do nothing
     break;
   }
 };
