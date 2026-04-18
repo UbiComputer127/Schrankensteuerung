@@ -14,9 +14,9 @@ class S88_Class
     void init();
     
     static void RisingLoad();
-    static void RisingClock();
+    static void FallingClock();
     
-    void setValue(bool Value, uint16_t Mask);
+    void setValue(bool Value, uint8_t Mask);
 
     private:
 
@@ -29,11 +29,11 @@ class S88_Class
     Switch_Enum  Switch;
     unsigned int InputClock_;
     unsigned int InputLoad_;
-    static uint16_t InputData_;
-    static uint16_t OutputData_;
-    static uint16_t CurrentValue;
-    static uint16_t ShiftValue;
-    static uint16_t InputData;
+    static uint8_t InputData_;
+    static uint8_t OutputData_;
+    static uint8_t CurrentValue;
+    static uint8_t ShiftValue;
+    static uint8_t InputData;
 };
 
 extern S88_Class S88_Object;

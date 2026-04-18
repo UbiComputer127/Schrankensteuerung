@@ -1,11 +1,11 @@
 #include "S88.hpp" 
 #include <Arduino.h>
 
-uint16_t S88_Class::InputData_(0);
-uint16_t S88_Class::OutputData_(0);
-uint16_t S88_Class::CurrentValue(0);
-uint16_t S88_Class::ShiftValue(0);
-uint16_t S88_Class::InputData(0);
+uint8_t S88_Class::InputData_(0);
+uint8_t S88_Class::OutputData_(0);
+uint8_t S88_Class::CurrentValue(0);
+uint8_t S88_Class::ShiftValue(0);
+uint8_t S88_Class::InputData(0);
 
 
 S88_Class::S88_Class(unsigned int InputClock, unsigned int InputLoad, unsigned int InputData, unsigned int OutputData)
@@ -23,10 +23,10 @@ void S88_Class::init()
       pinMode(InputLoad_, INPUT);
       attachInterrupt(digitalPinToInterrupt(InputLoad_), S88_Class::RisingLoad, RISING);
       pinMode(InputClock_, INPUT);
-      attachInterrupt(digitalPinToInterrupt(InputClock_), S88_Class::RisingClock, RISING);
+      attachInterrupt(digitalPinToInterrupt(InputClock_), S88_Class::FallingClock, FALLING);
 }
 
-void S88_Class::setValue(bool Value, uint16_t Mask)
+void S88_Class::setValue(bool Value, uint8_t Mask)
 {
     if (Value)
     {
@@ -43,7 +43,7 @@ void S88_Class::RisingLoad()
     ShiftValue = CurrentValue;
 }
 
-void S88_Class::RisingClock()
+void S88_Class::FallingClock()
 {
     if (ShiftValue & 0x80)
     {
