@@ -4,7 +4,7 @@
 #include "Key.hpp"
 #include "Leds.hpp"
 #include "Barrier.hpp"
-#include "AudioIsd1730.hpp"
+#include "Sound.hpp"
 #include "S88.hpp"
 #include "Dcc.hpp"
 
@@ -19,7 +19,6 @@ void RailroadCrossingGate_Class::process()
   {
     case SETUP:
       Leds_Object1.setWhiteLedActive();
-      Leds_Object2.setWhiteLedActive();
       Switch = IDLE;
     break;
 
@@ -31,7 +30,6 @@ void RailroadCrossingGate_Class::process()
       {
           // Zug kommt, Schranke schliessen
           Leds_Object1.setWhiteLedSmartOff(); // Weisse LED ausschalten
-          Leds_Object2.setWhiteLedSmartOff(); // Weisse LED ausschalten
           Switch = START_RED_LIGHT;
       }
     }
@@ -39,14 +37,13 @@ void RailroadCrossingGate_Class::process()
 
     case START_RED_LIGHT:
     // warten, bis weisse Leds aus sind
-    if ((Leds_Object1.getLedsState() == Leds_Class::OFF) && (Leds_Object2.getLedsState() == Leds_Class::OFF))
+    if (Leds_Object1.getLedsState() == Leds_Class::OFF)
     {
         // rote LEDs leuchten
         Leds_Object1.setRedLedsActive();
-        Leds_Object2.setRedLedsActive();
         
         // Ton der Glocke starten
-        AudioIsd1730_Object.playSound();
+        Sound_Object.playSound();
 
         Timer = millis() + TimeToCloseBatrrier;
         Switch = WAIT_TO_CLOSE_BARRIER;
@@ -67,7 +64,7 @@ void RailroadCrossingGate_Class::process()
     if (Barrier1_Object.getState() == Barrier_Class::BARRIER_CLOSED)
     {   
         // Ton wieder ausschalten
-        AudioIsd1730_Object.stopSound();
+        Sound_Object.stopSound();
 
         // S88 Schrasnke gesclossen, zurück melden: das niederwertigste Bit wird auf 1 gesetzt
         S88_Object.setValue(true, 0x0001);
@@ -97,16 +94,14 @@ void RailroadCrossingGate_Class::process()
         {
           // rotes Licht ausschalten
           Leds_Object1.setRedLedSmartOff();
-          Leds_Object2.setRedLedSmartOff();
           Switch = WAIT_RED_LEDS_OFF;   
         }
     break;
 
     case WAIT_RED_LEDS_OFF:
-        if ((Leds_Object1.getLedsState() == Leds_Class::OFF) && (Leds_Object2.getLedsState() == Leds_Class::OFF))
+        if (Leds_Object1.getLedsState() == Leds_Class::OFF)
         {
             Leds_Object1.setWhiteLedActive();
-            Leds_Object2.setWhiteLedActive();
             // über S88 signalisieren, dass Schranke wieder offen ist
             S88_Object.setValue(false, 0x0001);
             Switch = IDLE;

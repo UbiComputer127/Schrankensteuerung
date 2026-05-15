@@ -142,5 +142,4 @@ void Leds_Class::setRedLedSmartOff()
     }
 }
 
-Leds_Class Leds_Object1(A0, A1, A2);
-Leds_Class Leds_Object2(A3, A4, A5);
+Leds_Class Leds_Object1(A3, A1, A2);

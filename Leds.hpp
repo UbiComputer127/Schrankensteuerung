@@ -32,6 +32,7 @@ class Leds_Class
 
   bool WhiteLedSmartActive;
   bool RedLedSmartActive;
+  
   public:
 
   Leds_Class(unsigned int PortLed1, unsigned int PortLed2, unsigned int PortLed3);
@@ -55,6 +56,5 @@ class Leds_Class
 };
 
 extern Leds_Class Leds_Object1;
-extern Leds_Class Leds_Object2;
 
 #endif // define LEDS_CLASS_HPP

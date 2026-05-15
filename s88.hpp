@@ -16,9 +16,11 @@ class S88_Class
     static void RisingLoad();
     static void FallingClock();
     
-    void setValue(bool Value, uint8_t Mask);
+    void setValue(bool Value, uint16_t Mask);
 
     private:
+
+    static const int  MaxModulSize = 16;  // Anzahl der Bits im Modul
 
     enum Switch_Enum
     {
@@ -29,11 +31,12 @@ class S88_Class
     Switch_Enum  Switch;
     unsigned int InputClock_;
     unsigned int InputLoad_;
-    static uint8_t InputData_;
-    static uint8_t OutputData_;
-    static uint8_t CurrentValue;
-    static uint8_t ShiftValue;
-    static uint8_t InputData;
+    
+    static uint16_t OutputData_;
+    static uint16_t CurrentValue;
+    static uint16_t ShiftValue;
+    static uint16_t InputData_;
+    
 };
 
 extern S88_Class S88_Object;

@@ -1,12 +1,10 @@
 #include "S88.hpp" 
 #include <Arduino.h>
 
-uint8_t S88_Class::InputData_(0);
-uint8_t S88_Class::OutputData_(0);
-uint8_t S88_Class::CurrentValue(0);
-uint8_t S88_Class::ShiftValue(0);
-uint8_t S88_Class::InputData(0);
-
+uint16_t S88_Class::OutputData_(0);
+uint16_t S88_Class::CurrentValue(0);
+uint16_t S88_Class::ShiftValue(0);
+uint16_t S88_Class::InputData_(0);
 
 S88_Class::S88_Class(unsigned int InputClock, unsigned int InputLoad, unsigned int InputData, unsigned int OutputData)
 : InputClock_(InputClock)
@@ -18,15 +16,15 @@ S88_Class::S88_Class(unsigned int InputClock, unsigned int InputLoad, unsigned i
 
 void S88_Class::init()
 {
-      pinMode(OutputData_, OUTPUT);
-      pinMode(InputData_, INPUT);
-      pinMode(InputLoad_, INPUT);
-      attachInterrupt(digitalPinToInterrupt(InputLoad_), S88_Class::RisingLoad, RISING);
-      pinMode(InputClock_, INPUT);
-      attachInterrupt(digitalPinToInterrupt(InputClock_), S88_Class::FallingClock, FALLING);
+    pinMode(OutputData_, OUTPUT);
+    pinMode(InputData_, INPUT);
+    pinMode(InputLoad_, INPUT);
+    attachInterrupt(digitalPinToInterrupt(InputLoad_), S88_Class::RisingLoad, RISING);
+    pinMode(InputClock_, INPUT);
+    attachInterrupt(digitalPinToInterrupt(InputClock_), S88_Class::FallingClock, FALLING);
 }
 
-void S88_Class::setValue(bool Value, uint8_t Mask)
+void S88_Class::setValue(bool Value, uint16_t Mask)
 {
     if (Value)
     {
@@ -45,7 +43,7 @@ void S88_Class::RisingLoad()
 
 void S88_Class::FallingClock()
 {
-    if (ShiftValue & 0x80)
+    if (ShiftValue & 0x8000)
     {
         digitalWrite(OutputData_, 1);
     }
@@ -56,7 +54,7 @@ void S88_Class::FallingClock()
     ShiftValue <<= 1;
     
     // Daten einlesen
-    InputData = digitalRead(InputData_);
+    bool InputData = digitalRead(InputData_);
 
     if (InputData > 0)
     {
