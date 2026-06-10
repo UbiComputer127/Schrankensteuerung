@@ -94,10 +94,10 @@ Leds_Class::Leds_Class(unsigned int PortLed1, unsigned int PortLed2, unsigned in
 void Leds_Class::setWhiteLedActive()
 {
     // P3 und P4 auf 0
-    digitalWrite(PortLed2_, LOW);
-    digitalWrite(PortLed3_, LOW);
+    digitalWrite(PortLed2_, HIGH);
+    digitalWrite(PortLed3_, HIGH);
     // P2 auf 1, dann leuchtet sie
-    digitalWrite(PortLed1_, HIGH);
+    digitalWrite(PortLed1_, LOW);
     TriggerTime = millis() + WhiteLedOn;
     LedsState = ON_WHITE;
     LedOnWhite = true;
@@ -105,7 +105,7 @@ void Leds_Class::setWhiteLedActive()
 
 void Leds_Class::setRedLedsActive()
 {
-    digitalWrite(PortLed1_, LOW);
+    digitalWrite(PortLed1_, HIGH);
     digitalWrite(PortLed2_, HIGH);
     digitalWrite(PortLed3_, LOW);
     LedOnRed = true;

@@ -36,12 +36,12 @@ unsigned int Port_;
 Barrier_Enum CurrentState;
 Servo Servo_;
 unsigned int Position;
-static const unsigned int PositionMax = 90;
-static const unsigned int PositionMin = 0;
+static const unsigned int PositionMax = 150;   // Schranke offen
+static const unsigned int PositionMin = 115;    // Schranke zu 
 unsigned long Timer;
-static const unsigned long Intervall = 30;
-static const unsigned int RockIndexMax = 36; 
-const uint8_t RockValues[RockIndexMax]={1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0, 1, 2, 4, 2, 1, 0};
+static const unsigned long Intervall = 60;
+static const unsigned int RockIndexMax = 12; 
+const uint8_t RockValues[RockIndexMax]={1, 2, 3, 2, 1, 0, 1, 2, 1, 0, 1, 0};
 unsigned int RockIndex;
 const int EepromAddress_;
 };

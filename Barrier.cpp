@@ -28,10 +28,10 @@ void Barrier_Class::process()
         Timer = millis() + Intervall;
         switch (CurrentState)
         {
-            case Barrier_Class::BARRIER_TO_OPEN:       // entspricht von 90 nach 0 Grad
-            if (Position > PositionMin)
+            case Barrier_Class::BARRIER_TO_OPEN:       // entspricht von 0 nach 90 Grad
+            if (Position < PositionMax)
             {
-                Servo_.write(--Position);
+                Servo_.write(++Position);
             }
             else
             {
@@ -43,9 +43,9 @@ void Barrier_Class::process()
             break;
 
             case BARRIER_TO_CLOSE:                      // entspricht von 0 nach 90 Grad
-            if (Position < PositionMax)
+            if (Position > PositionMin)
             {
-                Servo_.write(++Position);
+                Servo_.write(--Position);
             }
             else
             {
@@ -57,7 +57,7 @@ void Barrier_Class::process()
             case BARRIER_ROCK:
                 if (RockIndex < RockIndexMax)
                 {
-                    Servo_.write(PositionMax - RockValues[RockIndex++]);
+                    Servo_.write(PositionMin + RockValues[RockIndex++]);
                 }
                 else
                 {

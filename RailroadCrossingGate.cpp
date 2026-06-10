@@ -64,7 +64,7 @@ void RailroadCrossingGate_Class::process()
     if (Barrier1_Object.getState() == Barrier_Class::BARRIER_CLOSED)
     {   
         // Ton wieder ausschalten
-        Sound_Object.stopSound();
+        //Sound_Object.stopSound();
 
         // S88 Schrasnke gesclossen, zurück melden: das niederwertigste Bit wird auf 1 gesetzt
         S88_Object.setValue(true, 0x0001);
@@ -94,6 +94,8 @@ void RailroadCrossingGate_Class::process()
         {
           // rotes Licht ausschalten
           Leds_Object1.setRedLedSmartOff();
+
+          Sound_Object.stopSound();
           Switch = WAIT_RED_LEDS_OFF;   
         }
     break;
