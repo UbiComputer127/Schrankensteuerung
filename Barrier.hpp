@@ -8,27 +8,36 @@ class Barrier_Class
 
 public:
 
+// Zustand der Schranke
 enum Barrier_Enum
 {
-    BARRIER_UNKNOWN = 1,
-    BARRIER_OPEN,
-    BARRIER_CLOSED,
-    BARRIER_TO_OPEN,
-    BARRIER_TO_CLOSE,
-    BARRIER_ROCK
+    BARRIER_UNKNOWN = 1,    // unbekannt, beim Einschalten der Steuerung
+    BARRIER_OPEN,           // Schranke ist offen
+    BARRIER_CLOSED,         // Schranke ist geschlossen
+    BARRIER_TO_OPEN,        // Öffnen der Schranke
+    BARRIER_TO_CLOSE,       // Schliessen der Schranke
+    BARRIER_ROCK            // Wippen der Schranke am Ende des Schliessens
 };
 
-  Barrier_Class(unsigned int Port, const int EepromAdress);
+  // Konstruktor
+  // Port: Controlport für Servo
+  // EepromAddress: Merker für Zustand der Schranke  
+  Barrier_Class(unsigned int Port, const int EepromAdress, const int AngelPositionMin, const int AngelPositionMax);
 
-  void Init();
+  // Initiaylisierung
+  void init();
 
+  // hzyklisc he Triggedrung der Steuerung
   void process();
 
+  // augenblicklicher Zustand der Schranke
   Barrier_Enum getState(); 
 
-  void Open();
+  // Kommando zum Öffnen der Schranke
+  void open();
 
-  void Close();
+  // Kommando zum Schliessen derf Schranke
+  void close();
 
 private:
 
@@ -36,12 +45,14 @@ unsigned int Port_;
 Barrier_Enum CurrentState;
 Servo Servo_;
 unsigned int Position;
-static const unsigned int PositionMax = 150;   // Schranke offen
-static const unsigned int PositionMin = 115;    // Schranke zu 
+
+const int AngelPositionMin_;
+const int AngelPositionMax_;
+
 unsigned long Timer;
-static const unsigned long Intervall = 60;
-static const unsigned int RockIndexMax = 12; 
-const uint8_t RockValues[RockIndexMax]={1, 2, 3, 2, 1, 0, 1, 2, 1, 0, 1, 0};
+static const unsigned long Intervall = 70;
+static const unsigned int RockIndexMax = 10; 
+const uint8_t RockValues[RockIndexMax]={2, 3, 4, 3, 2, 0, 2, 3, 2, 0};
 unsigned int RockIndex;
 const int EepromAddress_;
 };

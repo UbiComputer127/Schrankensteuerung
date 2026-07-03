@@ -24,6 +24,7 @@ class RailroadCrossingGate_Class
   const static unsigned long TimeToCloseBatrrier = 2000;
   const static unsigned long TimeToWaitCloseBarrier = 3000;
   const static unsigned long TimeCloseBarriers = 2000;
+  const static unsigned long TimeWaitToWhiteLed = 1500;
 
   public:
 
