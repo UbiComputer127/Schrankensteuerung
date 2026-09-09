@@ -62,5 +62,5 @@ void S88_Class::FallingClock()
     } 
 }
 
-S88_Class S88_Object(D12, D13, D11, D4);
+S88_Class S88_Object(D2, D1, D13, D12);
 
