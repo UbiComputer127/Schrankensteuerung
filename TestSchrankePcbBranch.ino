@@ -6,6 +6,7 @@
 #include "Sound.hpp"
 #include "Dcc.hpp"
 #include "s88.hpp"
+#include "TestLed.hpp"
 
 void setup()
 {
@@ -18,6 +19,7 @@ void setup()
     S88_Object.init();
     Dcc_Object.init();
     Sound_Object.Init();
+    TestLed_Object.init();
 }
 
 void loop()
@@ -27,5 +29,5 @@ void loop()
     Key_Object.process();
     Barrier1_Object.process();
     Barrier2_Object.process();
-    ControlTimer_Object.process();
+    TestLed_Object.process();
 }

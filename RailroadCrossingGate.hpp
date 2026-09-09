@@ -1,20 +1,6 @@
 #ifndef RAILROADCROSSING_CLASS_HPP
 #define RAILROADCROSSING_CLASS_HPP
 
-class TestTimer_Class
-{
-public:
-  TestTimer_Class();
-  void startTimer(unsigned long Time);
-  bool isDone(void);
-  void process();
-
-  private:
-  unsigned long Timer;
-  bool IsDone;
-};
-
-
 class RailroadCrossingGate_Class
 {
 private:
@@ -39,9 +25,6 @@ private:
   const static unsigned long TimeCloseBarriers = 2000;
   const static unsigned long TimeWaitToWhiteLed = 1500;
 
-  static const unsigned long OpenTime = 60000; 
-  static const unsigned long CloseTime = 30000;
-
 public:
 
   void Init();
@@ -49,7 +32,6 @@ public:
   void process();
 };
 
-extern TestTimer_Class ControlTimer_Object;
 extern RailroadCrossingGate_Class RailroadCrossingGate_Object;
 
 #endif  // define RAILROADCROSSING_CLASS_HPP
