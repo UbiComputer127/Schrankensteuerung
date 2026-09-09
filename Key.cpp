@@ -66,4 +66,4 @@ bool Key_Class::getEvent()
     return Return;
 }
 
-Key_Class Key_Object(D0);
+Key_Class Key_Object(A5);
