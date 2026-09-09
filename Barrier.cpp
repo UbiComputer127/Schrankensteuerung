@@ -146,8 +146,8 @@ void Barrier_Class::WriteEepromInt(int Address, int Value)
 
 static const unsigned int PositionMin_1 = 1650; // Winkel des Servos - Schranke geschlossen
 static const unsigned int PositionMax_1 = 1250; // Winkel des Servos - Schranke geöffnet 
-Barrier_Class Barrier1_Object(10, 1, PositionMin_1, PositionMax_1);
+Barrier_Class Barrier1_Object(D10, 1, PositionMin_1, PositionMax_1);
 
 static const unsigned int PositionMin_2 = 1650; // Winkel des Servos - Schranke geschlossen
 static const unsigned int PositionMax_2 = 1250; // Winkel des Servos - Schranke geöffnet 
-Barrier_Class Barrier2_Object(5, 3, PositionMin_2, PositionMax_2);
+Barrier_Class Barrier2_Object(D11, 3, PositionMin_2, PositionMax_2);
