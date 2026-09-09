@@ -41,18 +41,25 @@ enum Barrier_Enum
 
 private:
 
+int ReadEepromInt(int Address);
+void WriteEepromInt(int Address, int Value);
+
 unsigned int Port_;
 Barrier_Enum CurrentState;
 Servo Servo_;
-unsigned int Position;
 
-const int AngelPositionMin_;
-const int AngelPositionMax_;
+const int AngelPositionMinMicroseconds_;
+const int AngelPositionMaxMicroseconds_;
 
 unsigned long Timer;
-static const unsigned long Intervall = 70;
+int ServoMicroSeconds;
+
+static const unsigned long NormalTime = 30;
+static const unsigned long RockerTime = 60;
+
+unsigned long Intervall = 30;    // Timer wird an Hand des Zustands gesetzt
 static const unsigned int RockIndexMax = 10; 
-const uint8_t RockValues[RockIndexMax]={2, 3, 4, 3, 2, 0, 2, 3, 2, 0};
+const uint8_t RockValues[RockIndexMax]={10, 15, 20, 15, 10, 0, 10, 15, 10, 0};
 unsigned int RockIndex;
 const int EepromAddress_;
 };

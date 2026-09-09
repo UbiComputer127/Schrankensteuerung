@@ -12,8 +12,8 @@ void setup()
     Serial.begin();
     Leds_Object1.InitLeds();
     RailroadCrossingGate_Object.Init();
-    Barrier1_Object.Init();
-    Barrier2_Object.Init();
+    Barrier1_Object.init();
+    Barrier2_Object.init();
     Key_Object.Init();
     S88_Object.init();
     Dcc_Object.init();
@@ -27,4 +27,5 @@ void loop()
     Key_Object.process();
     Barrier1_Object.process();
     Barrier2_Object.process();
+    ControlTimer_Object.process();
 }

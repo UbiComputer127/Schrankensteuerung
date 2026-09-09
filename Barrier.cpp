@@ -6,20 +6,27 @@ Barrier_Class::Barrier_Class(unsigned int Port, int EepromAdress, const int Ange
 : CurrentState(BARRIER_UNKNOWN)
 , Port_(Port)
 , EepromAddress_(EepromAdress)
-, AngelPositionMin_(AngelPositionMin)
-, AngelPositionMax_(AngelPositionMax)
+, AngelPositionMinMicroseconds_(AngelPositionMin)   // Schranke unten/geschlossen
+, AngelPositionMaxMicroseconds_(AngelPositionMax)   // Schranke oben/offen
 {
-
+   
 }
 
 void Barrier_Class::init()
 {
-    Position = EEPROM.read(EepromAddress_);
+    ServoMicroSeconds = ReadEepromInt(EepromAddress_);
+    // ServoMicroSeconds = 1500;
     Servo_.attach(Port_);
-    Servo_.write(Position);
+    Servo_.writeMicroseconds(ServoMicroSeconds);
+    Intervall = NormalTime;
     Timer = millis() + Intervall;
-    Serial.print(Position);
-    Serial.println(" init");
+    Serial.print("aktuelle Pos: ");
+    Serial.println(ServoMicroSeconds);
+    Serial.print("Min: ");
+    Serial.println(AngelPositionMinMicroseconds_);
+    Serial.print("Max: ");
+    Serial.println(AngelPositionMaxMicroseconds_);
+
     CurrentState = BARRIER_TO_OPEN;         // Zustand der Schranke offen
 }
 
@@ -32,29 +39,36 @@ void Barrier_Class::process()
         {
             // Schranke wird geöffnet
             case Barrier_Class::BARRIER_TO_OPEN:      
-            if (Position > AngelPositionMax_)          // entspricht von 0 nach 90 Grad
+            if (ServoMicroSeconds > AngelPositionMaxMicroseconds_)          // entspricht von 0 nach 90 Grad
             {
-                Servo_.write(--Position);
+                ServoMicroSeconds = ServoMicroSeconds - 3;
+                Servo_.writeMicroseconds(ServoMicroSeconds);
             }
             else
             {
                 CurrentState = Barrier_Class::BARRIER_OPEN;
-                EEPROM.write(EepromAddress_, Position);
-                Serial.print(Position);
+                WriteEepromInt(EepromAddress_, ServoMicroSeconds);
+                Serial.print(ServoMicroSeconds);
                 Serial.println(" Open");
+                Serial.print("Min: ");
+                Serial.println(AngelPositionMinMicroseconds_);
+                Serial.print("Max: ");
+                Serial.println(AngelPositionMaxMicroseconds_);
             }
             break;
 
             // Schranke wird geschlossen
             case BARRIER_TO_CLOSE:                     
-            if (Position < AngelPositionMin_)
+            if (ServoMicroSeconds < AngelPositionMinMicroseconds_)
             {
-                Servo_.write(++Position);
+                ServoMicroSeconds = ServoMicroSeconds + 3;
+                Servo_.writeMicroseconds(ServoMicroSeconds);
             }
             else
             {
                 CurrentState = BARRIER_ROCK;
                 RockIndex = 0;
+                Intervall = RockerTime;
             }
             break;
 
@@ -62,13 +76,14 @@ void Barrier_Class::process()
             case BARRIER_ROCK:
                 if (RockIndex < RockIndexMax)
                 {
-                    Servo_.write(AngelPositionMin_ + RockValues[RockIndex++]);
+                    Servo_.writeMicroseconds(AngelPositionMinMicroseconds_ - RockValues[RockIndex++]);
                 }
                 else
                 {
                     CurrentState = BARRIER_CLOSED;
-                    EEPROM.write(EepromAddress_, Position);
-                    Serial.print(Position);
+                    WriteEepromInt(EepromAddress_, ServoMicroSeconds);
+                    Intervall = NormalTime;
+                    Serial.print(ServoMicroSeconds);
                     Serial.println(" Close");
                 }
             break;
@@ -100,10 +115,39 @@ void Barrier_Class::close()
     }
 }
 
-static const unsigned int PositionMin_1 = 70; // Winkel des Servos - Schranke offen
-static const unsigned int PositionMax_1 = 35; // Winkel des Servos - Schranke zu 
+// auf Address liegt der höherwertige Teil von Values
+// auf Address+1 liegt der niederwertige Teil von Value
+int Barrier_Class::ReadEepromInt(int Address)
+{
+    int ReturnValue;
+    ReturnValue =  EEPROM.read(Address) << 8;
+    ReturnValue += EEPROM.read(Address + 1);
+
+    Serial.print("ReadEeprom ");
+    Serial.print(Address);
+    Serial.print(" ");
+    Serial.println(ReturnValue);
+
+    return ReturnValue;
+}
+
+void Barrier_Class::WriteEepromInt(int Address, int Value)
+{
+    EEPROM.write(Address, Value >> 8 );         // höherwertiger Anteil nach Address
+    EEPROM.write(Address + 1, Value & 0x00FF);  // niederwertige Anteil nach Address+1
+
+    Serial.print("WriteEeprom ");
+    Serial.print(Address);
+    Serial.print(" ");
+    Serial.println(Value);
+
+}
+
+
+static const unsigned int PositionMin_1 = 1650; // Winkel des Servos - Schranke geschlossen
+static const unsigned int PositionMax_1 = 1250; // Winkel des Servos - Schranke geöffnet 
 Barrier_Class Barrier1_Object(10, 1, PositionMin_1, PositionMax_1);
 
-static const unsigned int PositionMin_2 = 70; // Winkel des Servos - Schranke offen
-static const unsigned int PositionMax_2 = 35; // Winkel des Servos - Schranke zu 
-Barrier_Class Barrier2_Object(5, 2, PositionMin_2, PositionMax_2);
+static const unsigned int PositionMin_2 = 1650; // Winkel des Servos - Schranke geschlossen
+static const unsigned int PositionMax_2 = 1250; // Winkel des Servos - Schranke geöffnet 
+Barrier_Class Barrier2_Object(5, 3, PositionMin_2, PositionMax_2);
