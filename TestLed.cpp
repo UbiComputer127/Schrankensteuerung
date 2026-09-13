@@ -1,6 +1,6 @@
- #include "TestLed.hpp" 
- #include <Arduino.h>
- 
+#include "TestLed.hpp" 
+#include <Arduino.h> 
+
  TestLed_Class::TestLed_Class(int Port)
  : Port_(Port)
  , LedIsBlinking_(false)
@@ -12,8 +12,8 @@
 
 void TestLed_Class::init()
 {
-    pinMode(Port_, OUTPUT);       // hier die weisse LED
-    digitalWrite(Port_, LOW);     // alle Ports 0, dann LEDs aus
+    pinMode(Port_, OUTPUT);         // hier die weisse LED
+    digitalWrite(Port_, LOW);       // alle Ports 0, dann LEDs aus
 }
 
 void TestLed_Class::process()

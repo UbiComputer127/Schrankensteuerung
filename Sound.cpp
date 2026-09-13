@@ -1,7 +1,6 @@
 #include "Sound.hpp"
 #include <Arduino.h>
 #include "GlockeUwe.hpp" 
-#include "GlockeJan.hpp"
 
 int DateIndex = 0;
 
@@ -16,7 +15,7 @@ void Sound_Class::timer_callback(timer_callback_args_t __attribute((unused)) *p_
     //  Audiodaten, Wert verdoppeln
     unsigned char Value = pgm_read_byte(&GlockeUwe[DateIndex++]);
     // Wert ausgeben zum DAC
-    analogWrite(DAC, Value);                   // pgm_read_byte(&AudioDate[DateIndex++]));
+    analogWrite(DAC, Value);
     
     if (DateIndex >= sizeof(GlockeUwe))
     {
@@ -63,6 +62,9 @@ void Sound_Class::Init()
 {
     // Ports einstellen als Ausgaben
     analogWriteResolution(8); // 8-bit: values 0–255
+
+    // DAC set to the middle value
+    analogWrite(DAC, 128);
     
     // Timer
     initAudioTimer(8000); 
@@ -79,7 +81,7 @@ void Sound_Class::stopSound()
 {
     SoundTimer.stop();
     // Test, Ausgabe 0 zum DAC
-    analogWrite(DAC, 0);      // Output to the middle range
+    // analogWrite(DAC, 0);      // Output to the middle range
 }
 
 Sound_Class Sound_Object;
