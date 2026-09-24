@@ -17,6 +17,7 @@ S88_Class::S88_Class(unsigned int InputClock, unsigned int InputLoad, unsigned i
 void S88_Class::init()
 {
     pinMode(OutputData_, OUTPUT);
+    digitalWrite(OutputData_, 0);   // Pin ist negiert und so wird der Ausgang auf 1 gesetzt
     pinMode(InputData_, INPUT);
     pinMode(InputLoad_, INPUT);
     attachInterrupt(digitalPinToInterrupt(InputLoad_), S88_Class::RisingLoad, RISING);
@@ -45,11 +46,11 @@ void S88_Class::FallingClock()
 {
     if (ShiftValue & 0x8000)
     {
-        digitalWrite(OutputData_, 1);
+        digitalWrite(OutputData_, 0);
     }
     else
     {
-        digitalWrite(OutputData_, 0);
+        digitalWrite(OutputData_, 1);
     }
     ShiftValue <<= 1;
     
