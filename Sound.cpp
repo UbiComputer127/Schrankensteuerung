@@ -3,6 +3,7 @@
 #include "GlockeUwe.hpp" 
 
 int DateIndex = 0;
+Sound_Class::StopSound_Enum Sound_Class::SoundStop = Sound_Class::Idle;
 
 Sound_Class::Sound_Class()
 {
@@ -20,7 +21,19 @@ void Sound_Class::timer_callback(timer_callback_args_t __attribute((unused)) *p_
     if (DateIndex >= sizeof(GlockeUwe))
     {
         DateIndex = 0;
+        if (SoundStop == SoundShouldStop)
+        {
+            SoundStop = SoundReadStop;
+        }
     } 
+}
+
+void Sound_Class::process()
+{
+    if (SoundStop == SoundReadStop)
+    {
+        stopSound();  
+    }  
 }
 
 bool Sound_Class::initAudioTimer(float Rate)
@@ -75,13 +88,28 @@ void Sound_Class::playSound()
     // Index der Soundwerte auf 0 setzen
     DateIndex = 0;  
     SoundTimer.start();
+    SoundStop = SoundRunning;
 }
 
 void Sound_Class::stopSound()
 {
     SoundTimer.stop();
-    // Test, Ausgabe 0 zum DAC
-    // analogWrite(DAC, 0);      // Output to the middle range
+    SoundStop = Idle;
+}
+
+void Sound_Class::stopSoundWait()
+{
+    SoundStop = SoundShouldStop;
+}
+
+bool Sound_Class::SoundStopIsReady()
+{
+    bool Return = false;
+    if (SoundStop == Idle)
+    {
+        Return = true;
+    }
+    return Return;
 }
 
 Sound_Class Sound_Object;

@@ -30,4 +30,5 @@ void loop()
     Barrier1_Object.process();
     Barrier2_Object.process();
     TestLed_Object.process();
+    Sound_Object.process();
 }

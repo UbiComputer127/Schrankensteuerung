@@ -74,13 +74,21 @@ void RailroadCrossingGate_Class::process()
         (Barrier2_Object.getState() == Barrier_Class::BARRIER_CLOSED))
     {   
         // Ton wieder ausschalten
-        Sound_Object.stopSound();
+        Sound_Object.stopSoundWait();
 
         // S88 Schrasnke gesclossen, zurück melden: das niederwertigste Bit wird auf 1 gesetzt
         S88_Object.setValue(true, 0x0001);
 
-        Switch = CLOSE_BARRIER;
+        Switch = WAIT_SOUND_IS_OFF;
     }  
+    break;
+
+    // warten, bis der Klingelton zu Ende ist
+    case WAIT_SOUND_IS_OFF:
+      if (Sound_Object.SoundStopIsReady() == true)
+      {
+          Switch = CLOSE_BARRIER;
+      }
     break;
 
     // Schranken sind geschlossen
@@ -130,7 +138,7 @@ void RailroadCrossingGate_Class::process()
     default:
     // do nothing
     break;
-  }
+    }
 };
 
 RailroadCrossingGate_Class RailroadCrossingGate_Object;
